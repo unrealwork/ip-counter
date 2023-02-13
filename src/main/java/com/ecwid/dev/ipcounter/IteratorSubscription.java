@@ -1,4 +1,4 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -8,7 +8,7 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class IteratorSubscription<T> implements Flow.Subscription {
+class IteratorSubscription<T> implements Flow.Subscription {
     private final Iterator<T> iterator;
     private final IteratorPublisher<? super T> publisher;
     private final Flow.Subscriber<? super T> subscriber;
@@ -16,8 +16,8 @@ public class IteratorSubscription<T> implements Flow.Subscription {
     private final Deque<Future<?>> tasks = new ArrayDeque<>();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
 
-    public IteratorSubscription(Iterator<T> iterator, IteratorPublisher<? super T> publisher,
-                                Flow.Subscriber<? super T> subscriber, ExecutorService executorService) {
+    IteratorSubscription(Iterator<T> iterator, IteratorPublisher<? super T> publisher,
+                         Flow.Subscriber<? super T> subscriber, ExecutorService executorService) {
         this.iterator = iterator;
         this.publisher = publisher;
         this.subscriber = subscriber;
@@ -41,7 +41,7 @@ public class IteratorSubscription<T> implements Flow.Subscription {
             tasks.addLast(task);
             i++;
         }
-        
+
         if (!iterator.hasNext()) {
             subscriber.onComplete();
         }

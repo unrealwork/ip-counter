@@ -1,5 +1,5 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter;
 
-public interface Counter {
+interface Counter {
     long count();
 }

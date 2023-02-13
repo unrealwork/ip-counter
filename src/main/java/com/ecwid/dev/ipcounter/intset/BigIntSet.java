@@ -1,4 +1,4 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter.intset;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.stream.IntStream;

@@ -1,4 +1,4 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

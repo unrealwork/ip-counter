@@ -10,10 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ExecutionException;
 
-final class UniqueIpCounter implements Counter {
+final class FileUniqueIpCounter implements Counter {
     private final Path p;
 
-    UniqueIpCounter(Path path) {
+    FileUniqueIpCounter(Path path) {
         this.p = path;
     }
 
@@ -32,10 +32,5 @@ final class UniqueIpCounter implements Counter {
             Thread.currentThread().interrupt();
             throw new IllegalStateException();
         }
-    }
-
-    public static void main(String[] args) {
-        UniqueIpCounter ipCounter = new UniqueIpCounter(Path.of(args[0]));
-        System.out.println(ipCounter.count());
     }
 }

@@ -1,4 +1,4 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -10,13 +10,13 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
-public class IteratorPublisher<T> implements Flow.Publisher<T> {
+class IteratorPublisher<T> implements Flow.Publisher<T> {
     private static final ExecutorService EXECUTOR_SERVICE = ForkJoinPool.commonPool();
     private final Supplier<Iterator<T>> iteratorSupplier;
     private final Deque<Future<?>> activeTasks = new ConcurrentLinkedDeque<>();
     private boolean subscribed = false;
 
-    public IteratorPublisher(Supplier<Iterator<T>> iteratorSupplier) {
+    IteratorPublisher(Supplier<Iterator<T>> iteratorSupplier) {
         this.iteratorSupplier = iteratorSupplier;
     }
 

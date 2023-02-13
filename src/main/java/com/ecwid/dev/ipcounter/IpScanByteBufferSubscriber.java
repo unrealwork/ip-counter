@@ -1,4 +1,4 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.Flow;
@@ -28,15 +28,10 @@ final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
     @Override
     public void onNext(ByteBuffer item) {
         scanChunk(item);
-        buffered.decrementAndGet();
-        if (buffered.get() < BUFFER_SIZE) {
-            subsctiption.request(BUFFER_SIZE - buffered.get());
-            buffered.set(BUFFER_SIZE);
-            item.clear();
-        }
+        subsctiption.request(1);
     }
-    
-    
+
+
     @Override
     public void onError(Throwable throwable) {
         throw new IllegalStateException(throwable);
@@ -44,6 +39,7 @@ final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
 
     @Override
     public void onComplete() {
+        // NOOP
     }
 
     private void scanChunk(ByteBuffer b) {

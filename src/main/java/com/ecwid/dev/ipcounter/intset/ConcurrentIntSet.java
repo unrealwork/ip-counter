@@ -1,4 +1,4 @@
-package uniqueip;
+package com.ecwid.dev.ipcounter.intset;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
