@@ -45,7 +45,7 @@ Measurements are performed on low-middle laptop with following characteristics:
 
 #### Example of measurements
 
-Reading of provided file with size of `120GB` takes about `6.5 min` in average.
+Handling of provided file with size of `120GB` takes about `6.5 min` in average.
 
 ```shell
 PS D:\ip_addresses> Measure-Command { java -jar C:\Users\unrea\IdeaProjects\ip-counter\target\ip-counter.jar D:\ip_addresses\ip_addresses | Out-Host }
