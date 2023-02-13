@@ -1,5 +1,7 @@
 ## ip-counter
 
+[![Maven](https://github.com/unrealwork/ip-counter/actions/workflows/maven.yml/badge.svg)](https://github.com/unrealwork/ip-counter/actions/workflows/maven.yml)
+
 Count unique IPV4 addresses in provided file according
 to [task](https://github.com/Ecwid/new-job/blob/master/IP-Addr-Counter.md)
 
