@@ -7,13 +7,16 @@
   <groupId>com.ecwid.dev</groupId>
   <artifactId>ip-counter</artifactId>
   <version>0.0.1</version>
-  
+
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <junit-jupiter.version>5.9.2</junit-jupiter.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven-compiler.version>3.10.1</maven-compiler.version>
+    <maven-failsafe.version>3.0.0-M7</maven-failsafe.version>
+    <maven-surefire.version>3.0.0-M7</maven-surefire.version>
   </properties>
 
   <dependencies>
@@ -53,7 +56,20 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe.version}</version>
+      </plugin>
     </plugins>
   </build>
-  
+
 </project>
