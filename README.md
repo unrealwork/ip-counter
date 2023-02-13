@@ -22,7 +22,7 @@ The main task of this implementation is to maximize utilization of provided reso
 
 - [x] Avoid String creation using reading file by byte and composing integer value corresponding to IP.
 - [x] Provide special [data structure](src/main/java/com/ecwid/dev/ipcounter/intset/BigIntSet.java) to store set
-  of `int` values efficiently. It requires $ 2^32 $ bits to store all possible ips which is around `512Mb` of heap.
+  of `int` values efficiently. It requires $2^{32}$ bits to store all possible ips which is around `512Mb` of heap.
 - [x] Support for concurrent access to the data structure
   using [AtomicIntegerArray](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicIntegerArray.html)
 - [x] Concurrent processing of file: file is split to independent parts and processed in parallel if possible. The
