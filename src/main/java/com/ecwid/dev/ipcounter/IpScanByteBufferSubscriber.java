@@ -9,14 +9,20 @@ final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
     private static final char DOT = '.';
     private static final long BUFFER_SIZE = Runtime.getRuntime().availableProcessors();
     public static final int SEGMENT_BIT_SIZE = 8;
+    public static final char ZERO = '0';
+    public static final char NINE = '9';
     private final AtomicLong buffered = new AtomicLong();
     public static final int LAST_SEGMENT = 3;
 
     private final IntConsumer ipConsumer;
     private Flow.Subscription subsctiption;
 
+    private static final int[][] MULT_CACHE = preCalcMultiplication();
+
     public IpScanByteBufferSubscriber(IntConsumer ipConsumer) {
         this.ipConsumer = ipConsumer;
+
+
     }
 
     @Override
@@ -50,16 +56,17 @@ final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
         while (b.hasRemaining()) {
             char c = (char) b.get();
             if (isDigit(c)) {
-                int d = toDigit(c);
-                curSegment = curSegment * 10 + d;
+                curSegment = MULT_CACHE[curSegment][c];
             } else {
                 if (c == DOT) {
-                    curIp |= (curSegment << (SEGMENT_BIT_SIZE * segmentNumber));
+                    curIp <<= SEGMENT_BIT_SIZE;
+                    curIp |= curSegment;
                     curSegment = 0;
                     segmentNumber++;
                 } else {
                     if (segmentNumber == LAST_SEGMENT) {
-                        curIp |= (curSegment << (SEGMENT_BIT_SIZE * segmentNumber));
+                        curIp <<= SEGMENT_BIT_SIZE;
+                        curIp |= curSegment;
                         ipConsumer.accept(curIp);
                         curSegment = 0;
                         segmentNumber = 0;
@@ -70,11 +77,17 @@ final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
         }
     }
 
-    private static boolean isDigit(char c) {
-        return c >= '0' && c <= '9';
+    private static int[][] preCalcMultiplication() {
+        int[][] multCache = new int[1 << 8][1 << 8];
+        for (int i = 0; i < multCache.length; i++) {
+            for (int d = ZERO; d <= NINE; d++) {
+                multCache[i][d] = i * 10 + (d - ZERO);
+            }
+        }
+        return multCache;
     }
 
-    private static int toDigit(char c) {
-        return c - '0';
+    private static boolean isDigit(char c) {
+        return ZERO <= c && c <= NINE;
     }
 }
