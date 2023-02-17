@@ -29,7 +29,7 @@ class IteratorSubscription<T> implements Flow.Subscription {
     }
 
     @Override
-    public void request(long n) {
+    public synchronized void request(long n) {
         if (n < 0) {
             cancel();
             throw new IllegalArgumentException();
@@ -55,7 +55,7 @@ class IteratorSubscription<T> implements Flow.Subscription {
     }
 
     @Override
-    public void cancel() {
+    public synchronized void cancel() {
         if (!isTerminated.getAndSet(true)) {
             for (Future<?> task : tasks) {
                 if (!task.isDone() && !task.isCancelled()) {
