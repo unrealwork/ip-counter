@@ -17,7 +17,8 @@ class IteratorSubscription<T> implements Flow.Subscription {
     private final ExecutorService executorService;
     private final Set<Future<?>> tasks = ConcurrentHashMap.newKeySet();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-
+    
+    private final AtomicLong runTasks = new AtomicLong();
     private final AtomicLong leftTasks = new AtomicLong();
 
     IteratorSubscription(Iterator<T> iterator, IteratorPublisher<? super T> publisher,
@@ -40,11 +41,11 @@ class IteratorSubscription<T> implements Flow.Subscription {
                 break;
             }
             T next = iterator.next();
+            runTasks.incrementAndGet();
             leftTasks.incrementAndGet();
             CompletableFuture<Void> task = CompletableFuture.runAsync(() -> subscriber.onNext(next), executorService);
             tasks.add(task);
-            task.thenRun(() -> {
-                tasks.removeIf(Future::isDone);
+            task.thenRunAsync(() -> {
                 if (leftTasks.decrementAndGet() == 0 && !iterator.hasNext()) {
                     subscriber.onComplete();
                     publisher.doFinally();
