@@ -1,9 +1,10 @@
 package com.ecwid.dev.ipcounter;
 
 import java.util.Iterator;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Flow;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +18,7 @@ class IteratorPublisher<T> implements Flow.Publisher<T> {
 
     private static ThreadPoolExecutor parallelPool() {
         ThreadFactory threadFactory = new NamedThreadFactory("iterator-publisher-thread");
-        ArrayBlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(NUM_CORES * 2);
+        BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
         return new ThreadPoolExecutor(NUM_CORES, NUM_CORES, 60, TimeUnit.SECONDS, workQueue, threadFactory);
     }
 
