@@ -42,27 +42,28 @@ Measurements are performed on low-middle laptop with following characteristics:
 | **RAM** | 16.0 GB (14.9 GB usable)                                   |
 | **SSD** | NVMe____WDC_PC_SN530_SDB7                                  |
 | **OS** | Windows 11 (ver. 22H2)                                     |
+| **JDK**  | graalvm-ce-java17@22.3.1 |
 
 #### Example of measurements
 
-Handling of provided file with size of `120GB` takes about `6.5 min` in average.
+Handling of provided file with size of `120GB` takes about `5 min` in average.
 
 ```shell
-PS D:\ip_addresses> Measure-Command { java -jar C:\Users\unrea\IdeaProjects\ip-counter\target\ip-counter.jar D:\ip_addresses\ip_addresses | Out-Host }
+PS C:\Users\unrea> Measure-Command { java -jar C:\Users\unrea\IdeaProjects\ip-counter\target\ip-counter.jar D:\ip_addresses\ip_addresses | Out-Host }
 1000000000
 
 
 Days              : 0
 Hours             : 0
-Minutes           : 6
-Seconds           : 19
-Milliseconds      : 925
-Ticks             : 3799251176
-TotalDays         : 0.0043972814537037
-TotalHours        : 0.105534754888889
-TotalMinutes      : 6.33208529333333
-TotalSeconds      : 379.9251176
-TotalMilliseconds : 379925.1176
+Minutes           : 5
+Seconds           : 7
+Milliseconds      : 74
+Ticks             : 3070748625
+TotalDays         : 0.00355410720486111
+TotalHours        : 0.0852985729166667
+TotalMinutes      : 5.117914375
+TotalSeconds      : 307.0748625
+TotalMilliseconds : 307074.8625
 ```
 
 

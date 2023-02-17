@@ -7,7 +7,7 @@ import java.util.function.IntConsumer;
 
 final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
     private static final char DOT = '.';
-    private static final long BUFFER_SIZE = 8;
+    private static final long BUFFER_SIZE = Runtime.getRuntime().availableProcessors();
     private final AtomicLong buffered = new AtomicLong();
     public static final int LAST_SEGMENT = 3;
 

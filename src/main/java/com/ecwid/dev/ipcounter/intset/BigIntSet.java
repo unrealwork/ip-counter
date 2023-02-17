@@ -26,7 +26,7 @@ class BigIntSet implements IntSet {
     public synchronized long size() {
         return IntStream.range(0, storage.length())
                 .parallel()
-                .map(i -> Integer.bitCount(storage.get(i)))
+                .mapToLong(i -> Integer.bitCount(storage.get(i)))
                 .sum();
     }
 }
