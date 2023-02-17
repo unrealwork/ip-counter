@@ -7,7 +7,8 @@ import java.util.function.IntConsumer;
 
 final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
     private static final char DOT = '.';
-    private static final long BUFFER_SIZE = 8;
+    private static final long BUFFER_SIZE = Runtime.getRuntime().availableProcessors();
+    public static final int SEGMENT_BIT_SIZE = 8;
     private final AtomicLong buffered = new AtomicLong();
     public static final int LAST_SEGMENT = 3;
 
@@ -53,12 +54,12 @@ final class IpScanByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
                 curSegment = curSegment * 10 + d;
             } else {
                 if (c == DOT) {
-                    curIp |= (curSegment << (BUFFER_SIZE * segmentNumber));
+                    curIp |= (curSegment << (SEGMENT_BIT_SIZE * segmentNumber));
                     curSegment = 0;
                     segmentNumber++;
                 } else {
                     if (segmentNumber == LAST_SEGMENT) {
-                        curIp |= (curSegment << (BUFFER_SIZE * segmentNumber));
+                        curIp |= (curSegment << (SEGMENT_BIT_SIZE * segmentNumber));
                         ipConsumer.accept(curIp);
                         curSegment = 0;
                         segmentNumber = 0;
