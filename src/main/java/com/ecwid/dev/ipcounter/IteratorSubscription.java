@@ -17,8 +17,6 @@ class IteratorSubscription<T> implements Flow.Subscription {
     private final ExecutorService executorService;
     private final Set<Future<?>> tasks = ConcurrentHashMap.newKeySet();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-    
-    private final AtomicLong runTasks = new AtomicLong();
     private final AtomicLong leftTasks = new AtomicLong();
 
     IteratorSubscription(Iterator<T> iterator, IteratorPublisher<? super T> publisher,
@@ -30,28 +28,30 @@ class IteratorSubscription<T> implements Flow.Subscription {
     }
 
     @Override
-    public synchronized void request(long n) {
+    public  void request(long n) {
         if (n < 0) {
             cancel();
             throw new IllegalArgumentException();
         }
         int i = 0;
-        while (iterator.hasNext()) {
-            if (isTerminated.get() || i == n) {
-                break;
-            }
-            T next = iterator.next();
-            runTasks.incrementAndGet();
-            leftTasks.incrementAndGet();
-            CompletableFuture<Void> task = CompletableFuture.runAsync(() -> subscriber.onNext(next), executorService);
-            tasks.add(task);
-            task.thenRunAsync(() -> {
-                if (leftTasks.decrementAndGet() == 0 && !iterator.hasNext()) {
-                    subscriber.onComplete();
-                    publisher.doFinally();
+        synchronized (iterator) {
+            while (iterator.hasNext()) {
+                if (isTerminated.get() || i == n) {
+                    break;
                 }
-            });
-            i++;
+                T next = iterator.next();
+                leftTasks.incrementAndGet();
+                CompletableFuture<Void> task = CompletableFuture.runAsync(() -> subscriber.onNext(next), executorService);
+                tasks.add(task);
+                task.thenRun(() -> {
+                    tasks.remove(task);
+                    if (leftTasks.decrementAndGet() == 0 && !iterator.hasNext()) {
+                        subscriber.onComplete();
+                        publisher.doFinally();
+                    }
+                });
+                i++;
+            }
         }
     }
 
