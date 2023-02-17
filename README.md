@@ -48,7 +48,7 @@ Measurements are performed on low-middle laptop with following characteristics:
 
 #### Example of measurements
 
-Handling of provided file with size of `120GB` takes about `5 min` in average.
+Handling of provided file with size of `120GB` takes about `2 min` in average.
 
 ```shell
 PS C:\Users\unrea> Measure-Command { java -jar C:\Users\unrea\IdeaProjects\ip-counter\target\ip-counter.jar D:\ip_addresses\ip_addresses | Out-Host }
@@ -57,15 +57,15 @@ PS C:\Users\unrea> Measure-Command { java -jar C:\Users\unrea\IdeaProjects\ip-co
 
 Days              : 0
 Hours             : 0
-Minutes           : 5
-Seconds           : 7
-Milliseconds      : 74
-Ticks             : 3070748625
-TotalDays         : 0.00355410720486111
-TotalHours        : 0.0852985729166667
-TotalMinutes      : 5.117914375
-TotalSeconds      : 307.0748625
-TotalMilliseconds : 307074.8625
+Minutes           : 2
+Seconds           : 11
+Milliseconds      : 99
+Ticks             : 1310990407
+TotalDays         : 0.00151735000810185
+TotalHours        : 0.0364164001944444
+TotalMinutes      : 2.18498401166667
+TotalSeconds      : 131.0990407
+TotalMilliseconds : 131099.0407
 ```
 
 
