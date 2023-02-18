@@ -2,12 +2,12 @@
 
 [![Maven](https://github.com/unrealwork/ip-counter/actions/workflows/maven.yml/badge.svg)](https://github.com/unrealwork/ip-counter/actions/workflows/maven.yml)
 
-Count unique IPV4 addresses in provided file according
+Count unique IPV4 addresses in the provided file according
 to [task](https://github.com/Ecwid/new-job/blob/master/IP-Addr-Counter.md)
 
 ### Usage
 
-App provided as executable jar with main class [IpCounter](src/main/java/com/ecwid/dev/ipcounter/IpCounter.java).
+The app is provided as an executable jar with the main class [IpCounter](src/main/java/com/ecwid/dev/ipcounter/IpCounter.java).
 
 #### Example of usage
 
@@ -18,25 +18,26 @@ java -jar target/ip-counter.jar target/test-classes/ips15.in
 
 ### Performance
 
-The main task of this implementation is to maximize utilization of provided resources.
+The main task of this implementation is to maximize the utilization of provided resources.
 
 #### Key improvements
 
 - [x] Avoid String creation using reading file by byte and composing integer value corresponding to IP.
 - [x] Provide special [data structure](src/main/java/com/ecwid/dev/ipcounter/intset/BigIntSet.java) to store set
-  of `int` values efficiently. It requires $2^{32}$ bits to store all possible ips which is around `512Mb` of heap.
+  of `int` values efficiently. It requires $2^{32}$ bits to store all possible IPs which is around `512Mb` of heap memory.
 - [x] Support for concurrent access to the data structure
   using [AtomicIntegerArray](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicIntegerArray.html)
-- [x] Concurrent processing of file: file is split to independent parts and processed in parallel if possible. The
+- [x] Concurrent processing of file: file is split into independent parts and processed in parallel if possible. The
   approach is implemented using
   reactive [`Flow`](https://docs.oracle.com/javase/9/docs/api/java/util/concurrent/Flow.html) API.
 - [x] 
   Using [`MappedByteBuffer`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/MappedByteBuffer.html)
-  for faster reading parts of file.
+  for faster reading parts of a file.
+- [x] Minimize arithmetic operations during scans (caching appending of read digit (`res = res*10 + digit`)), replace arithmetic operations with a bit one if possible.
 
 ### Performance result
 
-Measurements are performed on low-middle laptop with following characteristics:
+Measurements are performed on a low-middle laptop with the following characteristics:
 
 |   |                                                            |
 |---|------------------------------------------------------------|
@@ -48,7 +49,7 @@ Measurements are performed on low-middle laptop with following characteristics:
 
 #### Example of measurements
 
-Handling of provided file with size of `120GB` takes about `2 min` in average.
+Handling of provided file with the size of `120GB` takes about `2 min` in average.
 
 ```shell
 PS C:\Users\unrea> Measure-Command { java -jar C:\Users\unrea\IdeaProjects\ip-counter\target\ip-counter.jar D:\ip_addresses\ip_addresses | Out-Host }
@@ -67,5 +68,3 @@ TotalMinutes      : 2.18498401166667
 TotalSeconds      : 131.0990407
 TotalMilliseconds : 131099.0407
 ```
-
-
